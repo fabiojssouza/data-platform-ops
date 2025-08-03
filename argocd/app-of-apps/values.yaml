@@ -46,17 +46,27 @@ applications:
     project: data-pipelines
     path: components/05-ingestion/airbyte-db-secret
     syncWave: 19
+
   - name: hive-metastore
     namespace: metastore
     project: data-lake
     # Nota: Usando um chart da comunidade. Em produção, você pode querer usar um chart oficial ou mantido internamente.
-    chart: hive-metastore
 #    repoURL: https://viethqb.github.io/charts
 #    targetRevision: 0.1.0
-    valuesFile: components/03-metastore/hive-metastore-values.yaml
     syncWave: 11
-    repoURL: https://gradiant.github.io/bigdata-charts
-    targetRevision: 0.1.3  # versão disponível no índice do repositório
+    sources:
+    # Fonte 1: chart do hive-metastore
+    - repoURL: https://gradiant.github.io/bigdata-charts
+      chart: hive-metastore
+      targetRevision: 0.1.3
+      helm:
+        valueFiles:
+          - $values/components/03-metastore/hive-metastore-values.yaml
+    # Fonte 2: seu repositório com os values
+    - repoURL: https://github.com/fabiojssouza/data-platform-ops.git
+      targetRevision: HEAD
+      ref: values
+
 
   - name: trino
     namespace: trino
