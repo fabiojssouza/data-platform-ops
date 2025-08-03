@@ -56,7 +56,7 @@ applications:
     syncWave: 11
     sources:
     # Fonte 1: chart do hive-metastore
-    - repoURL: https://gradiant.github.io/bigdata-charts
+    - repoURL: https://github.com/Gradiant/bigdata-charts
       chart: hive-metastore
       targetRevision: 0.1.3
       helm:
