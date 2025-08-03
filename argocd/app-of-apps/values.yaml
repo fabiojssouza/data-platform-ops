@@ -37,7 +37,6 @@ applications:
 #    valuesFile: components/02-storage/minio-values.yaml
     syncWave: 10
     sources:
-    # Fonte 1: chart do hive-metastore
     - repoURL: https://charts.bitnami.com/bitnami
       chart: minio
       targetRevision: 14.6.0
@@ -63,23 +62,19 @@ applications:
   - name: hive-metastore
     namespace: metastore
     project: data-lake
-    # Nota: Usando um chart da comunidade. Em produção, você pode querer usar um chart oficial ou mantido internamente.
-#    repoURL: https://viethqb.github.io/charts
-#    targetRevision: 0.1.0
     syncWave: 11
     sources:
-    # Fonte 1: chart do hive-metastore
-    - repoURL: https://github.com/Gradiant/bigdata-charts
+  # Fonte 1: chart helm no repositório GetInData
+    - repoURL: https://getindata.github.io/hive-metastore     # repositório Helm válido
       chart: hive-metastore
-      targetRevision: 0.1.3
+      targetRevision: 0.1.0                                    # versão listada no index.yaml
       helm:
         valueFiles:
-          - $values/components/03-metastore/hive-metastore-values.yaml
-    # Fonte 2: seu repositório com os values
+        - $values/components/03-metastore/hive-metastore-values.yaml
+  # Fonte 2: seu repositório de valores (para o arquivo de valores customizado)
     - repoURL: https://github.com/fabiojssouza/data-platform-ops.git
       targetRevision: HEAD
       ref: values
-
 
   - name: trino
     namespace: trino
