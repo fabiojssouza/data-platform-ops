@@ -44,7 +44,7 @@ applications:
   - name: airbyte-db-secret
     namespace: airbyte
     project: data-pipelines
-    path: components/05-ingestion/airbyte-db-secret.yaml
+    path: components/05-ingestion/airbyte-db-secret
     syncWave: 19
   - name: hive-metastore
     namespace: metastore
