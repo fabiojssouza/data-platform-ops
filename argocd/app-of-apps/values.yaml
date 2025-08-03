@@ -66,10 +66,30 @@ applications:
   - name: airbyte
     namespace: airbyte
     project: data-pipelines
+    syncWave: 20
+    sources:
+    # Fonte 1: chart do Airbyte
+    - repoURL: https://airbytehq.github.io/helm-charts
+      chart: airbyte
+      targetRevision: 1.7.2
+      helm:
+        valueFiles:
+          - $values/components/05-ingestion/airbyte-values.yaml
+    # Fonte 2: seu repositório com os values
+    - repoURL: https://github.com/fabiojssouza/data-platform-ops.git
+      targetRevision: HEAD
+      ref: values
+  - name: airbyte
+    namespace: airbyte
+    project: data-pipelines
     chart: airbyte
     repoURL: https://airbytehq.github.io/helm-charts
+    targetRevision: HEAD
+    ref: values
     targetRevision: 1.7.2
-    valuesFile: components/05-ingestion/airbyte-values.yaml
+    helm:
+      valueFiles:
+        - $values/components/05-ingestion/airbyte-values.yaml
     syncWave: 20
   - name: prefect-server
     namespace: prefect
