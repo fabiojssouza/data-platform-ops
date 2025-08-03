@@ -1,0 +1,4 @@
+# Configurações básicas para o NGINX Ingress Controller.
+controller:
+  service:
+    type: LoadBalancer

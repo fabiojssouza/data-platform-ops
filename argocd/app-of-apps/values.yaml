@@ -1,0 +1,94 @@
+# Central de controle para todos os aplicativos da plataforma.
+# Atualize 'repoURL' para a URL do seu repositório Git.
+argoCdNamespace: argocd
+destinationServer: https://kubernetes.default.svc
+repoURL: https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git # <-- ATUALIZE AQUI
+targetRevision: HEAD
+
+# Lista de todos os aplicativos a serem gerenciados pelo ArgoCD
+applications:
+  - name: namespaces
+    namespace: argocd
+    project: platform
+    path: components/01-namespaces
+    syncWave: 1
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    project: platform
+    chart: ingress-nginx
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    targetRevision: 4.10.1
+    valuesFile: components/09-ingress/ingress-nginx-values.yaml
+    syncWave: 2
+  - name: postgres-metastore
+    namespace: metastore
+    project: data-lake
+    chart: postgresql
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 15.4.2
+    valuesFile: components/02-storage/postgres-metastore-values.yaml
+    syncWave: 10
+  - name: minio
+    namespace: storage
+    project: data-lake
+    chart: minio
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 14.6.0
+    valuesFile: components/02-storage/minio-values.yaml
+    syncWave: 10
+
+  # Deploy a Kubernetes Secret containing the Airbyte database password before
+  # provisioning Airbyte itself.  Without this secret the Airbyte pods will
+  # crashloop because they cannot read their database credentials.  The
+  # manifest is stored under `components/05-ingestion/airbyte-db-secret.yaml`.
+  - name: airbyte-db-secret
+    namespace: airbyte
+    project: data-pipelines
+    path: components/05-ingestion/airbyte-db-secret.yaml
+    syncWave: 19
+  - name: hive-metastore
+    namespace: metastore
+    project: data-lake
+    # Nota: Usando um chart da comunidade. Em produção, você pode querer usar um chart oficial ou mantido internamente.
+    chart: hive-metastore
+    repoURL: https://viethqb.github.io/charts
+    targetRevision: 0.1.0
+    valuesFile: components/03-metastore/hive-metastore-values.yaml
+    syncWave: 11
+  - name: trino
+    namespace: trino
+    project: data-lake
+    chart: trino
+    repoURL: https://trinodb.github.io/charts
+    targetRevision: 0.21.0
+    valuesFile: components/04-query-engine/trino-values.yaml
+    syncWave: 12
+  - name: airbyte
+    namespace: airbyte
+    project: data-pipelines
+    chart: airbyte
+    repoURL: https://airbytehq.github.io/helm-charts
+    targetRevision: 1.7.2
+    valuesFile: components/05-ingestion/airbyte-values.yaml
+    syncWave: 20
+  - name: prefect-server
+    namespace: prefect
+    project: data-pipelines
+    chart: prefect-server
+    repoURL: https://prefecthq.github.io/prefect-helm
+    targetRevision: 2024.02.21
+    valuesFile: components/06-orchestration/prefect-values.yaml
+    syncWave: 20
+  - name: superset
+    namespace: superset
+    project: visualization
+    chart: superset
+    repoURL: https://apache.github.io/superset
+    targetRevision: 1.1.0
+    valuesFile: components/08-visualization/superset-values.yaml
+    syncWave: 30
+  - name: ui-ingresses
+    namespace: argocd
+    project: platform
+    path: components/09-ingress
+    syncWave: 100

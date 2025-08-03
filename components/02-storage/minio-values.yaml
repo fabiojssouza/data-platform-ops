@@ -1,0 +1,9 @@
+# Configuração para o MinIO.
+# Implanta como um StatefulSet para armazenamento persistente. [2, 3]
+architecture: standalone
+persistence:
+  enabled: true
+  size: 20Gi
+auth:
+  rootUser: minioadmin
+  rootPassword: minioadminpassword

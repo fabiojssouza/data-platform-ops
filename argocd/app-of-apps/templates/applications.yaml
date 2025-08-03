@@ -1,0 +1,38 @@
+# Este template itera sobre a lista 'applications' em values.yaml
+# e gera um manifesto de Aplicativo ArgoCD para cada um.
+{{- range.Values.applications }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{.name }}
+  namespace: {{ $.Values.argoCdNamespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{.syncWave }}"
+spec:
+  project: {{.project }}
+  source:
+    {{- if.chart }}
+    chart: {{.chart }}
+    repoURL: {{.repoURL }}
+    targetRevision: {{.targetRevision }}
+    helm:
+      {{- if.valuesFile }}
+      valueFiles:
+      - $values/{{.valuesFile }}
+      {{- end }}
+    {{- else }}
+    path: {{.path }}
+    repoURL: {{ $.Values.repoURL }}
+    targetRevision: {{ $.Values.targetRevision }}
+    {{- end }}
+  destination:
+    server: {{ $.Values.destinationServer }}
+    namespace: {{.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+{{- end }}

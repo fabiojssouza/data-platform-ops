@@ -1,0 +1,70 @@
+# Define projetos do ArgoCD para agrupar aplicativos e aplicar RBAC.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: {{.Values.argoCdNamespace }}
+spec:
+  description: Componentes de infraestrutura da plataforma
+  sourceRepos:
+  - '*'
+  destinations:
+  - server: {{.Values.destinationServer }}
+    namespace: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: data-lake
+  namespace: {{.Values.argoCdNamespace }}
+spec:
+  description: Componentes do Data Lakehouse (Armazenamento, Metastore, Motor de Consulta)
+  sourceRepos:
+  - '*'
+  destinations:
+  - server: {{.Values.destinationServer }}
+    namespace: storage
+  - server: {{.Values.destinationServer }}
+    namespace: metastore
+  - server: {{.Values.destinationServer }}
+    namespace: trino
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: data-pipelines
+  namespace: {{.Values.argoCdNamespace }}
+spec:
+  description: Ferramentas de pipeline de dados (Ingestão, Orquestração)
+  sourceRepos:
+  - '*'
+  destinations:
+  - server: {{.Values.destinationServer }}
+    namespace: airbyte
+  - server: {{.Values.destinationServer }}
+    namespace: prefect
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: visualization
+  namespace: {{.Values.argoCdNamespace }}
+spec:
+  description: Ferramentas de visualização e BI
+  sourceRepos:
+  - '*'
+  destinations:
+  - server: {{.Values.destinationServer }}
+    namespace: superset
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'

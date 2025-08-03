@@ -1,0 +1,18 @@
+# Configuração para o Superset.
+# O 'bootstrapScript' instala o driver do Trino para que o Superset possa se conectar. [13]
+ingress:
+  enabled: true
+  path: /
+  hosts:
+    - superset.local
+
+# Instala o driver sqlalchemy-trino na inicialização do pod.
+bootstrapScript: |
+  #!/bin/bash
+  # Install the Trino SQLAlchemy driver so that Superset can connect to our query engine.
+  pip install sqlalchemy-trino
+  # Create a flag file the first time the pod starts. Without the whitespace inside
+  # the test brackets the script would fail. See: https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell.html
+  if [ ! -f "$HOME/bootstrap" ]; then
+    echo "Running Superset with uid {{ .Values.runAsUser }}" > "$HOME/bootstrap"
+  fi

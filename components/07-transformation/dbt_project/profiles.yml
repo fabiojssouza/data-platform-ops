@@ -1,0 +1,13 @@
+# Este arquivo é usado pelo dbt para se conectar ao Trino.
+# Em um cenário real, use segredos do Kubernetes para gerenciar credenciais.
+modern_data_stack_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      host: trino.trino.svc.cluster.local
+      port: 8080
+      user: dbt-user
+      database: iceberg
+      schema: bronze
+      threads: 4

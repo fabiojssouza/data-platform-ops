@@ -1,0 +1,35 @@
+# Cria todos os namespaces necessários para a plataforma.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingress-nginx
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: storage
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: metastore
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: trino
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: airbyte
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prefect
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: superset

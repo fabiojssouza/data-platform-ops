@@ -1,0 +1,6 @@
+apiVersion: v2
+name: app-of-apps
+description: Um Helm chart para implantar a plataforma de dados moderna via ArgoCD
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

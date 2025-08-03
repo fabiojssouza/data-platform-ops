@@ -1,0 +1,8 @@
+# Configuração para o servidor Prefect e agente.
+# O agente é configurado para procurar por trabalho na fila 'kubernetes'. [11, 12]
+agent:
+  enabled: true
+  workPool:
+    name: "kubernetes-pool"
+  workQueues:
+    - name: "kubernetes"

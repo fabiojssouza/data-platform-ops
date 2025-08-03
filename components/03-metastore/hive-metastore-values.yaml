@@ -1,0 +1,20 @@
+# Configuração para o Hive Metastore.
+# Aponta para o serviço PostgreSQL e configura o warehouse para o MinIO. [7]
+database:
+  type: postgres
+  host: postgres-metastore-postgresql.metastore.svc.cluster.local
+  port: 5432
+  user: hive
+  password: hivepassword
+  dbName: metastore
+
+s3:
+  endpoint: http://minio.storage.svc.cluster.local:9000
+  accessKey: minioadmin
+  secretKey: minioadminpassword
+  pathStyleAccess: "true"
+
+# Define o caminho do warehouse dentro do bucket do MinIO.
+# O bucket 'lakehouse' precisa ser criado manualmente ou por um job.
+config:
+  hive.metastore.warehouse.dir: s3a://lakehouse/

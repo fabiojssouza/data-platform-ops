@@ -1,0 +1,27 @@
+# Configuração para o Airbyte.
+# Desabilita o PostgreSQL e o MinIO internos para usar os nossos. [9, 10]
+global:
+  database:
+    type: "external"
+    host: "postgres-metastore-postgresql.metastore.svc.cluster.local"
+    port: "5432"
+    user: "airbyte" # Requer a criação deste usuário/db no postgres
+    passwordSecret:
+      secretName: "airbyte-db-secret"
+      passwordKey: "password"
+    dbName: "airbyte"
+  storage:
+    type: "minio"
+    endpoint: "http://minio.storage.svc.cluster.local:9000"
+    bucket:
+      log: "airbyte-logs"
+      state: "airbyte-state"
+      workloadOutput: "airbyte-workloads"
+    accessKey: "minioadmin"
+    secretAccessKey: "minioadminpassword"
+
+postgresql:
+  enabled: false
+
+minio:
+  enabled: false

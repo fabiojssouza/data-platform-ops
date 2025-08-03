@@ -1,0 +1,21 @@
+# Configuração para o PostgreSQL que serve como backend para o Hive Metastore.
+# Implanta como um StatefulSet para persistência. [4, 5, 6]
+architecture: standalone
+auth:
+  database: metastore
+  username: hive
+  password: hivepassword
+primary:
+  persistence:
+    enabled: true
+    size: 10Gi
+  # Create an additional user and database for Airbyte.  The Bitnami PostgreSQL
+  # chart runs any SQL files placed under `primary.initdb.scripts` when the
+  # cluster is first initialized.  This script creates a role and database
+  # called `airbyte` with its own password.  Airbyte will use these
+  # credentials when connecting to the database (see airbyte-values.yaml).
+  initdb:
+    scripts:
+      create_airbyte_user.sql: |
+        CREATE ROLE airbyte WITH LOGIN PASSWORD 'airbytepassword';
+        CREATE DATABASE airbyte OWNER airbyte;
