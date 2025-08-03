@@ -28,14 +28,21 @@ applications:
     targetRevision: 15.4.2
     valuesFile: components/02-storage/postgres-metastore-values.yaml
     syncWave: 10
+
   - name: minio
     namespace: storage
     project: data-lake
-    chart: minio
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 14.6.0
-    valuesFile: components/02-storage/minio-values.yaml
     syncWave: 10
+    sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: minio
+      targetRevision: 14.6.0
+      helm:
+        valueFiles:
+        - $values/components/02-storage/minio-values.yaml
+    - repoURL: https://github.com/fabiojssouza/data-platform-ops.git
+      targetRevision: HEAD
+      ref: values
 
   # Deploy a Kubernetes Secret containing the Airbyte database password before
   # provisioning Airbyte itself.  Without this secret the Airbyte pods will
