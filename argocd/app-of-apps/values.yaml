@@ -2,7 +2,7 @@
 # Atualize 'repoURL' para a URL do seu repositório Git.
 argoCdNamespace: argocd
 destinationServer: https://kubernetes.default.svc
-repoURL: https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git # <-- ATUALIZE AQUI
+repoURL: https://github.com/fabiojssouza/data-platform-ops.git # <-- ATUALIZE AQUI
 targetRevision: HEAD
 
 # Lista de todos os aplicativos a serem gerenciados pelo ArgoCD
